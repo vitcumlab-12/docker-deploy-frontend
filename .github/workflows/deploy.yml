@@ -1,5 +1,5 @@
 name: Deploy frontend application
-'on':
+on:
   push:
     branches:
       - main
@@ -7,34 +7,26 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4     
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      -
-        name: prepare the docker-compose run
-        run: |
-              ls -l
-      -
-        name: Build and push
+      - name: prepare the docker-compose run
+        run: ls -l
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: vitcum666/234-deploylab-frontend:latest
-     -
-        name: copy file via ssh password
+      - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{secrets.HOST_SERVER}}
@@ -43,8 +35,7 @@ jobs:
           port: 22
           source: "docker-compose.yml"
           target: "/home/ubuntu/frontend"
-      -
-        name:   docker compose
+      - name: docker compose
         uses: appleboy/ssh-action@v1.2.1
         with:
           host: ${{secrets.HOST_SERVER}}
