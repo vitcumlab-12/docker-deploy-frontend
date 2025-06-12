@@ -3,3 +3,4 @@ export const environment = {
   graphqlUri: 'http://54.160.199.16:8085/graphql'
 
 };
+// trigger redeploy
